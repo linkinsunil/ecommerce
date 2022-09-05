@@ -1,7 +1,9 @@
 import { ArrowLeftOutlined, ArrowRightOutlined } from '@mui/icons-material';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { sliderItems } from '../data';
+import { mobile } from '../responsive';
 
 const Container = styled.div`
   width: 100%;
@@ -9,6 +11,8 @@ const Container = styled.div`
   display: flex;
   position: relative;
   overflow: hidden;
+
+  ${mobile({ display: 'none' })}
 `;
 
 const Arrow = styled.div`
@@ -76,6 +80,8 @@ const Button = styled.button`
 `;
 
 const Slider = () => {
+  const navigate = useNavigate();
+
   const [slideIndex, setSlideIndex] = useState(0);
 
   const handleClick = direction => {
@@ -84,6 +90,10 @@ const Slider = () => {
     } else {
       setSlideIndex(slideIndex < 2 ? slideIndex + 1 : 0);
     }
+  };
+
+  const goBackToShopping = () => {
+    navigate('/productList');
   };
 
   return (
@@ -100,7 +110,7 @@ const Slider = () => {
             <InfoContainer>
               <Title>{item.title}</Title>
               <Desc>{item.desc}</Desc>
-              <Button>SHOP NOW</Button>
+              <Button onClick={goBackToShopping}>SHOP NOW</Button>
             </InfoContainer>
           </Slide>
         ))}

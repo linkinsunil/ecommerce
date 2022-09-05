@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useCart } from '../context/cartContext';
 import { popularProducts } from '../data';
 import Product from './Product';
 
@@ -10,9 +11,13 @@ const Container = styled.div`
 `;
 
 const Products = () => {
+  const {
+    state: { cart, products },
+  } = useCart();
+  console.log(products);
   return (
     <Container>
-      {popularProducts.map(item => (
+      {products.map(item => (
         <Product key={item.id} item={item} />
       ))}
     </Container>
