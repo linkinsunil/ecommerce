@@ -8,9 +8,12 @@ import {
   Twitter,
 } from '@mui/icons-material';
 import styled from 'styled-components';
+import { mobile } from '../responsive';
 
 const Container = styled.div`
   display: flex;
+
+  ${mobile({ flexDirection: 'column' })}
 `;
 
 const Left = styled.div`
@@ -51,6 +54,8 @@ const SocialIcon = styled.div`
 const Center = styled.div`
   flex: 1;
   padding: 20px;
+
+  ${mobile({ display: 'none' })}
 `;
 
 const Title = styled.h3`
@@ -73,6 +78,8 @@ const ListItem = styled.li`
 const Right = styled.div`
   flex: 1;
   padding: 20px;
+
+  ${mobile({ backgroundColor: '#fff8f8' })}
 `;
 
 const ContactItem = styled.div`
@@ -96,16 +103,40 @@ const Footer = () => {
         </Desc>
         <SocialContainer>
           <SocialIcon bg='2962FF'>
-            <Facebook />
+            <a
+              href='https://www.facebook.com/'
+              target='_blank'
+              rel='noreferrer'
+            >
+              <Facebook />
+            </a>
           </SocialIcon>
           <SocialIcon bg='E4405F'>
-            <Instagram />
+            <a
+              href='https://www.instagram.com/linkinsunil'
+              target='_blank'
+              rel='noreferrer'
+            >
+              <Instagram />
+            </a>
           </SocialIcon>
           <SocialIcon bg='55ACCE'>
-            <Twitter />
+            <a
+              href='https://www.twitter.com/officialskv'
+              target='_blank'
+              rel='noreferrer'
+            >
+              <Twitter />
+            </a>
           </SocialIcon>
           <SocialIcon bg='0072B2'>
-            <LinkedIn />
+            <a
+              href='https://www.linkedin.com/in/linkinsunil'
+              target='_blank'
+              rel='noreferrer'
+            >
+              <LinkedIn />
+            </a>
           </SocialIcon>
         </SocialContainer>
       </Left>
