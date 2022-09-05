@@ -1,13 +1,17 @@
 import { Add, Remove } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Announcement from '../components/Announcement';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
+import { mobile } from '../responsive';
 
 const Container = styled.div``;
 
 const Wrapper = styled.div`
   padding: 20px;
+
+  ${mobile({ padding: '10px' })}
 `;
 
 const Title = styled.h1`
@@ -32,7 +36,9 @@ const TopButton = styled.button`
   color: ${props => props.type === 'filled' && 'white'};
 `;
 
-const TopTexts = styled.div``;
+const TopTexts = styled.div`
+  ${mobile({ display: 'none' })}
+`;
 
 const TopText = styled.span`
   text-decoration: underline;
@@ -43,6 +49,14 @@ const TopText = styled.span`
 const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
+
+  ${mobile({
+    // width: '75%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '30px',
+  })}
 `;
 
 const Info = styled.div`
@@ -52,6 +66,8 @@ const Info = styled.div`
 const Product = styled.div`
   display: flex;
   justify-content: space-between;
+
+  ${mobile({ flexDirection: 'column' })}
 `;
 
 const ProductDetail = styled.div`
@@ -88,6 +104,8 @@ const PriceDetail = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  ${mobile({ marginBottom: '10px' })}
 `;
 
 const ProductAmountContainer = styled.div`
@@ -98,6 +116,8 @@ const ProductAmountContainer = styled.div`
 const ProductAmount = styled.div`
   font-size: 24px;
   margin: 5px;
+
+  ${mobile({ margin: '0 15px' })}
 `;
 const ProductPrice = styled.span`
   font-size: 30px;
@@ -108,6 +128,8 @@ const Hr = styled.div`
   background-color: #eee;
   border: none;
   height: 1px;
+
+  ${mobile({ display: 'none' })}
 `;
 
 const Summary = styled.div`
@@ -116,6 +138,8 @@ const Summary = styled.div`
   border-radius: 10px;
   padding: 20px;
   height: max-content;
+
+  ${mobile({ width: '100%' })}
 `;
 
 const SummaryTitle = styled.h1`
@@ -143,6 +167,12 @@ const Button = styled.button`
 `;
 
 const Cart = () => {
+  const navigate = useNavigate();
+
+  const handleGoBackToShopping = () => {
+    navigate('/productList');
+  };
+
   return (
     <Container>
       <Navbar />
@@ -150,7 +180,9 @@ const Cart = () => {
       <Wrapper>
         <Title>YOUR BAG</Title>
         <Top>
-          <TopButton>CONTINUE SHOPPING</TopButton>
+          <TopButton onClick={handleGoBackToShopping}>
+            CONTINUE SHOPPING
+          </TopButton>
           <TopTexts>
             <TopText>Shopping Bag (2)</TopText>
             <TopText>Your Wishlist (0)</TopText>
@@ -190,7 +222,7 @@ const Cart = () => {
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>$ 80</SummaryItemPrice>
+              <SummaryItemPrice>$ 60</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
@@ -202,7 +234,7 @@ const Cart = () => {
             </SummaryItem>
             <SummaryItem type='total'>
               <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>$ 80</SummaryItemPrice>
+              <SummaryItemPrice>$ 60</SummaryItemPrice>
             </SummaryItem>
             <Button>CHECKOUT NOW</Button>
           </Summary>
