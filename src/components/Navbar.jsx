@@ -1,8 +1,15 @@
-import { Search, ShoppingCartOutlined } from '@mui/icons-material';
+import {
+  Favorite,
+  FavoriteBorder,
+  Search,
+  ShoppingCart,
+  ShoppingCartOutlined,
+} from '@mui/icons-material';
 import { Badge } from '@mui/material';
 import styled from 'styled-components';
 import { mobile } from '../responsive';
 import { useNavigate } from 'react-router-dom';
+import { useCart } from '../context/cartContext';
 
 const Container = styled.div`
   height: 60px;
@@ -69,6 +76,9 @@ const MenuItem = styled.div`
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const {
+    state: { cart, wishlist },
+  } = useCart();
 
   const handleRegister = () => {
     navigate('/register');
@@ -80,6 +90,10 @@ const Navbar = () => {
 
   const handleCart = () => {
     navigate('/cart');
+  };
+
+  const handleWishlist = () => {
+    navigate('/wishlist');
   };
 
   return (
@@ -98,9 +112,22 @@ const Navbar = () => {
         <Right>
           <MenuItem onClick={handleRegister}>REGISTER</MenuItem>
           <MenuItem onClick={handleLogin}>SIGN IN</MenuItem>
+          <MenuItem onClick={handleWishlist}>
+            <Badge badgeContent={wishlist.length} color='primary'>
+              {wishlist.length > 0 ? (
+                <Favorite color='secondary' />
+              ) : (
+                <FavoriteBorder color='action' />
+              )}
+            </Badge>
+          </MenuItem>
           <MenuItem onClick={handleCart}>
-            <Badge badgeContent={4} color='primary'>
-              <ShoppingCartOutlined color='action' />
+            <Badge badgeContent={cart.length} color='primary'>
+              {cart.length > 0 ? (
+                <ShoppingCart color='secondary' />
+              ) : (
+                <ShoppingCartOutlined color='action' />
+              )}
             </Badge>
           </MenuItem>
         </Right>
