@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { mobile } from '../responsive';
+import Rating from './Rating';
 
-const Container = styled.div``;
+const Container = styled.div`
+  flex: 1;
+`;
 
 const Title = styled.h1`
   margin: 20px;
@@ -10,18 +13,21 @@ const Title = styled.h1`
 
 const FilterContainer = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
+  padding: 20px;
 
   ${mobile({ justifyContent: 'space-around' })}
 `;
 
 const Filter = styled.div`
   margin: 20px;
+  display: flex;
 
   ${mobile({ margin: '0 20px', display: 'flex', flexDirection: 'column' })}
 `;
 
-const FilterText = styled.span`
+const FilterText = styled.label`
   font-size: 20px;
   font-weight: 600;
   margin-right: 20px;
@@ -32,8 +38,7 @@ const FilterText = styled.span`
 const Select = styled.select`
   padding: 10px;
   margin-right: 20px;
-
-  ${mobile({ margin: '10px 0' })}
+  border-bottom: 0.5px solid #e2d2d2 ${mobile({ margin: '10px 0' })};
 `;
 
 const Option = styled.option`
@@ -72,8 +77,18 @@ const RangeInput = styled.input.attrs({ type: 'range' })`
   }
 `;
 
+const Button = styled.button`
+  padding: 10px;
+  background-color: transparent;
+  color: black;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+`;
+
 const Filters = () => {
   const [value, setValue] = useState(5000);
+  const [rate, setRate] = useState(3);
 
   const handleSliderChange = e => {
     setValue(e.target.value);
@@ -81,33 +96,30 @@ const Filters = () => {
 
   return (
     <Container>
-      <Title>Dresses</Title>
       <FilterContainer>
+        <FilterText id='category'>Filter Products:</FilterText>
         <Filter>
-          <FilterText>Filter Products:</FilterText>
-          <Select>
-            <Option disabled selected>
-              Category
-            </Option>
-            <Option>Men</Option>
-            <Option>Women</Option>
-            <Option>Kids</Option>
+          <Select name='category-filter' htmlFor='category'>
+            <Option value='select-category'>Category</Option>
+            <Option value='men'>Men</Option>
+            <Option value='women'>Women</Option>
+            <Option value='Kids'>Kids</Option>
           </Select>
-          <Select>
-            <Option disabled selected>
-              Size
-            </Option>
-            <Option>XS</Option>
-            <Option>S</Option>
-            <Option>M</Option>
-            <Option>L</Option>
-            <Option>XL</Option>
+          <Select name='size-filter'>
+            <Option value='select-size'>Size</Option>
+            <Option value='xs'>XS</Option>
+            <Option value='s'>S</Option>
+            <Option value='m'>M</Option>
+            <Option value='l'>L</Option>
+            <Option value='xl'>XL</Option>
           </Select>
         </Filter>
+
+        <FilterText id='price'>Filter Price:</FilterText>
         <Filter>
-          <FilterText>Filter Price:</FilterText>
           <RangeInput
-            name='price'
+            htmlFor='price'
+            name='price-range'
             type='range'
             step='500'
             min='0'
@@ -116,14 +128,24 @@ const Filters = () => {
             onChange={handleSliderChange}
           />
         </Filter>
+
+        <FilterText id='sort'>Sort Products:</FilterText>
         <Filter>
-          <FilterText>Sort Products:</FilterText>
-          <Select>
-            <Option selected>Newest</Option>
-            <Option>Price (asc)</Option>
-            <Option>Price (desc)</Option>
+          <Select name='price-sort' htmlFor='sort'>
+            <Option>Newest</Option>
+            <Option value='asc'>Price (asc)</Option>
+            <Option value='desc'>Price (desc)</Option>
           </Select>
         </Filter>
+
+        <FilterText id='rating'>Rating:</FilterText>
+        <Rating
+          rating={rate}
+          onClick={i => setRate(i + 1)}
+          style={{ cursor: 'pointer' }}
+        />
+
+        <Button>CLEAR FILTERS</Button>
       </FilterContainer>
     </Container>
   );
