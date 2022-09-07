@@ -3,8 +3,11 @@ import Navbar from '../components/Navbar';
 import Announcement from '../components/Announcement';
 import Newsletter from '../components/Newsletter';
 import Footer from '../components/Footer';
-import { Add, Remove, RemoveCircle } from '@mui/icons-material';
+import { Add, Remove } from '@mui/icons-material';
 import { mobile } from '../responsive';
+import { useParams } from 'react-router-dom';
+import { useCart } from '../context/cartContext';
+import { useState, useEffect } from 'react';
 
 const Container = styled.div``;
 
@@ -122,16 +125,32 @@ const Button = styled.button`
 `;
 
 const Product = () => {
+  const {
+    state: { products, cart },
+    dispatch,
+  } = useCart();
+
+  const [prod, setProd] = useState({});
+
+  let { productId } = useParams();
+
+  useEffect(() => {
+    const getProduct = products.filter(item => item.id === productId);
+    setProd(...getProduct);
+  }, [products, productId]);
+
+  console.log('🟠', prod);
+
   return (
     <Container>
       <Navbar />
       <Announcement />
       <Wrapper>
         <ImgContainer>
-          <Image src='https://i.ibb.co/S6qMxwr/jean.jpg' />
+          <Image src={prod.image} />
         </ImgContainer>
         <InfoContainer>
-          <Title>Denim Jumpsuit</Title>
+          <Title>{prod.name}</Title>
           <Desc>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto
             in voluptatem inventore aut, accusantium nobis omnis voluptate,
@@ -139,14 +158,14 @@ const Product = () => {
             consequuntur suscipit sed dicta provident et optio. In dolor enim
             doloribus quam nisi eum!
           </Desc>
-          <Price>$ 20</Price>
+          <Price>₹ {prod.price}</Price>
 
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>
-              <FilterColor color='black' />
-              <FilterColor color='darkblue' />
-              <FilterColor color='gray' />
+              <FilterColor color={'black'} />
+              <FilterColor color={'lightBlue'} />
+              <FilterColor color={'orange'} />
             </Filter>
 
             <Filter>
@@ -167,7 +186,21 @@ const Product = () => {
               <Amount>1</Amount>
               <Add />
             </AmountContainer>
-            <Button>ADD TO CART</Button>
+            {cart.some(el => el.id === prod.id) ? (
+              <Button
+                onClick={() =>
+                  dispatch({ type: 'REMOVE_FROM_CART', payload: prod })
+                }
+              >
+                REMOVE FROM CART
+              </Button>
+            ) : (
+              <Button
+                onClick={() => dispatch({ type: 'ADD_TO_CART', payload: prod })}
+              >
+                ADD TO CART
+              </Button>
+            )}
           </AddContainer>
         </InfoContainer>
       </Wrapper>
