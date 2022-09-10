@@ -85,12 +85,24 @@ const Wishlist = () => {
             </TopText>
           </TopTexts>
         </Top>
-
-        <Bottom>
-          {wishlist.map(item => (
-            <WishListItem dispatch={dispatch} item={item} key={item.id} />
-          ))}
-        </Bottom>
+        {wishlist.length > 0 ? (
+          <Bottom>
+            {wishlist.map(item => (
+              <WishListItem dispatch={dispatch} item={item} key={item.id} />
+            ))}
+          </Bottom>
+        ) : (
+          <Bottom
+            style={{
+              height: '60vh',
+              display: 'grid',
+              placeItems: 'center',
+              fontSize: '30px',
+            }}
+          >
+            Wishlist is looking empty 💔
+          </Bottom>
+        )}
       </Wrapper>
       <Footer />
     </Container>

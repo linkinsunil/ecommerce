@@ -1,9 +1,12 @@
 import {
+  Favorite,
+  FavoriteBorder,
   FavoriteBorderOutlined,
   SearchOutlined,
+  ShoppingCart,
   ShoppingCartOutlined,
 } from '@mui/icons-material';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useCart } from '../context/cartContext';
 import Rating from './Rating';
@@ -23,7 +26,7 @@ const Info = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  background-color: rgb(109, 93, 255, 0.2);
+  background-color: rgb(109, 93, 255, 0.4);
   z-index: 3;
   display: flex;
   align-items: center;
@@ -34,8 +37,8 @@ const Info = styled.div`
 const Wrapper = styled.div`
   flex: 1;
   margin: 5px;
-  min-width: 280px;
-  height: 350px;
+  width: 280px;
+  height: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -56,7 +59,9 @@ const Circle = styled.div`
 `;
 
 const Image = styled.img`
-  height: 75%;
+  min-width: 100%;
+  height: 100%;
+  object-fit: cover;
   z-index: 2;
 `;
 
@@ -85,23 +90,24 @@ const Info2 = styled(Info)`
 
 const Title = styled.h3`
   color: white;
-  transition: all 0.5s ease;
   cursor: pointer;
+  transition: all 0.5s ease;
 
   &:hover {
     transform: scale(1.1);
   }
 `;
-const Price = styled.p`
+const Price = styled.div`
   color: white;
+  display: flex;
+  gap: 1rem;
 `;
 
 const Button = styled.button`
   font-size: 14px;
   width: 50%;
   padding: 10px 0;
-  font-weight: 900;
-  background-color: ${({ type }) => (type === 'primary' ? 'teal' : '#e2e2e2')};
+  background-color: ${({ type }) => (type === 'primary' ? 'teal' : '#bcbcbc')};
   color: ${({ type }) => (type === 'primary' ? 'white' : 'teal')};
   border: ${({ type }) => (type === 'primary' ? 'none' : '2px solid teal')};
   display: flex;
@@ -113,7 +119,20 @@ const Button = styled.button`
   transition: all 0.5s ease;
 
   &:hover {
-    transform: scale(1.03);
+    transform: scale(1.08);
+  }
+`;
+
+const WishIcon = styled.div`
+  z-index: 10;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+
+  &:hover {
+    transform: scale(1.08);
   }
 `;
 
@@ -124,8 +143,6 @@ const ProductCard = ({ page }) => {
     dispatch,
   } = useCart();
 
-  console.log(products);
-
   return (
     <Container>
       {products.map(item => (
@@ -134,26 +151,59 @@ const ProductCard = ({ page }) => {
           <Image src={item.image} />
           {page === 'home' ? (
             <Info>
-              <Icon>
-                <ShoppingCartOutlined />
-              </Icon>
-              <Icon>
+              {cart.some(el => el.id === item.id) ? (
+                <Icon
+                  type='primary'
+                  style={{ color: 'red' }}
+                  onClick={() =>
+                    dispatch({ type: 'REMOVE_FROM_CART', payload: item })
+                  }
+                >
+                  <ShoppingCart />
+                </Icon>
+              ) : (
+                <Icon
+                  type='primary'
+                  disabled={!item.inStock}
+                  onClick={() =>
+                    dispatch({ type: 'ADD_TO_CART', payload: item })
+                  }
+                >
+                  <ShoppingCartOutlined />
+                </Icon>
+              )}
+              <Icon onClick={() => navigate(`/product/${item.id}`)}>
                 <SearchOutlined />
               </Icon>
-              <Icon>
-                <FavoriteBorderOutlined />
-              </Icon>
+              {wishlist.some(el => el.id === item.id) ? (
+                <Icon
+                  type='secondary'
+                  style={{ color: 'red' }}
+                  onClick={() =>
+                    dispatch({ type: 'REMOVE_FROM_WISHLIST', payload: item })
+                  }
+                >
+                  <Favorite />
+                </Icon>
+              ) : (
+                <Icon
+                  type='secondary'
+                  onClick={() =>
+                    dispatch({ type: 'ADD_TO_WISHLIST', payload: item })
+                  }
+                >
+                  <FavoriteBorderOutlined />
+                </Icon>
+              )}
             </Info>
           ) : (
             <Info2>
               <Title onClick={() => navigate(`/product/${item.id}`)}>
                 {item.name}
               </Title>
-              {/* <Title onClick={() => handleProductPage(item)}>
-                  {item.name}
-                </Title> */}
-              {/* <Link to={`/product/${item.id}`}>LINK {item.name}</Link> */}
-              <Price>₹ {item.price}</Price>
+              <Price>
+                ₹ {item.price} <Rating rating={item.ratings} />
+              </Price>
               {cart.some(el => el.id === item.id) ? (
                 <Button
                   type='primary'
@@ -178,26 +228,26 @@ const ProductCard = ({ page }) => {
               )}
 
               {wishlist.some(el => el.id === item.id) ? (
-                <Button
+                <WishIcon
                   type='secondary'
+                  style={{ color: 'red' }}
                   onClick={() =>
                     dispatch({ type: 'REMOVE_FROM_WISHLIST', payload: item })
                   }
                 >
-                  REMOVE FROM WISHLIST
-                </Button>
+                  <Favorite fontSize='large' />
+                </WishIcon>
               ) : (
-                <Button
+                <WishIcon
                   type='secondary'
+                  style={{ color: '#bcbcbc' }}
                   onClick={() =>
                     dispatch({ type: 'ADD_TO_WISHLIST', payload: item })
                   }
                 >
-                  ADD TO WISHLIST
-                </Button>
+                  <FavoriteBorder fontSize='large' />
+                </WishIcon>
               )}
-
-              <Rating rating={item.ratings} />
             </Info2>
           )}
         </Wrapper>

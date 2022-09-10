@@ -107,7 +107,7 @@ const Navbar = () => {
           </SearchContainer>
         </Left>
         <Center>
-          <Logo>CRAFT.</Logo>
+          <Logo onClick={() => navigate('/')}>CRAFT.</Logo>
         </Center>
         <Right>
           <MenuItem onClick={handleRegister}>REGISTER</MenuItem>

@@ -41,7 +41,7 @@ const App = () => {
             path='*'
             element={
               <BlankRoute>
-                <p>There's nothing here!</p>
+                <p>There's nothing here! Try a valid link </p>
               </BlankRoute>
             }
           />

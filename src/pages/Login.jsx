@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { mobile } from '../responsive';
 
@@ -59,6 +60,7 @@ const Link = styled.a`
 `;
 
 const Login = () => {
+  const navigate = useNavigate();
   return (
     <Container>
       <Wrapper>
@@ -68,7 +70,9 @@ const Login = () => {
           <Input placeholder='password' />
           <Button>LOGIN</Button>
           <Link>FORGOT PASSWORD?</Link>
-          <Link>CREATE A NEW ACCOUNT</Link>
+          <Link onClick={() => navigate('/register')}>
+            CREATE A NEW ACCOUNT
+          </Link>
         </Form>
       </Wrapper>
     </Container>

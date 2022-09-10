@@ -95,7 +95,12 @@ const Cart = () => {
           </Bottom>
         ) : (
           <SummaryTitle
-            style={{ height: '60vh', display: 'grid', placeItems: 'center' }}
+            style={{
+              height: '60vh',
+              display: 'grid',
+              placeItems: 'center',
+              fontWeight: '400',
+            }}
           >
             Cart is looking empty 🛒
           </SummaryTitle>

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useCart } from '../context/cartContext';
 import { mobile } from '../responsive';
 
 const TopButton = styled.button`
@@ -80,6 +81,12 @@ const RemoveButton = styled.button`
 `;
 
 const WishListItem = ({ dispatch, item }) => {
+  const {
+    state: { cart, wishlist },
+  } = useCart();
+  console.log('🟢', cart);
+  console.log('🟠', wishlist);
+
   return (
     <Product>
       <ProductDetail>
@@ -104,7 +111,13 @@ const WishListItem = ({ dispatch, item }) => {
         >
           ADD TO CART
         </Button>
-        <RemoveButton>REMOVE</RemoveButton>
+        <RemoveButton
+          onClick={() =>
+            dispatch({ type: 'REMOVE_FROM_WISHLIST', payload: item })
+          }
+        >
+          REMOVE
+        </RemoveButton>
       </Buttons>
     </Product>
   );

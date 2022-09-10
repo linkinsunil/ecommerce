@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { mobile } from '../responsive';
+import { useCart } from '../context/cartContext';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   flex: 1;
@@ -39,15 +42,30 @@ const Button = styled.button`
   background-color: white;
   color: gray;
   font-weight: 600;
+  cursor: pointer;
 `;
 
 const CategoryItem = ({ item }) => {
+  const navigate = useNavigate();
+
+  const {
+    state: { products },
+  } = useCart();
+
+  const [prod, setProd] = useState([]);
+
+  const handleCategory = item => {
+    const newProd = products.filter(el => el.cat === item.title.toLowerCase());
+    setProd(newProd);
+    navigate('/productList');
+  };
+
   return (
     <Container>
       <Image src={item.img} />
       <Info>
         <Title>{item.title}</Title>
-        <Button>SHOP NOW</Button>
+        <Button onClick={() => handleCategory(item)}>SHOP NOW</Button>
       </Info>
     </Container>
   );

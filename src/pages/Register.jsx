@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { mobile } from '../responsive';
 
@@ -55,7 +56,13 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+const Link = styled.span`
+  cursor: pointer;
+  text-decoration: underline;
+`;
+
 const Register = () => {
+  const navigate = useNavigate();
   return (
     <Container>
       <Wrapper>
@@ -69,7 +76,10 @@ const Register = () => {
           <Input placeholder='confirm password' />
           <Agreement>
             By creating an account, I consent to the processing of my personal
-            data in accordance with the <b>PRIVACY POLICY</b>
+            data in accordance with the <b>PRIVACY POLICY</b> |{' '}
+            <Link onClick={() => navigate('/login')}>
+              Already have an account
+            </Link>
           </Agreement>
           <Button>CREATE</Button>
         </Form>

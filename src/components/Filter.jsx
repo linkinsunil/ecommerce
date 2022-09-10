@@ -90,7 +90,7 @@ const Filters = () => {
   const [value, setValue] = useState(5000);
   const [rate, setRate] = useState(3);
 
-  const handleSliderChange = e => {
+  const handlePriceRange = e => {
     setValue(e.target.value);
   };
 
@@ -125,7 +125,7 @@ const Filters = () => {
             min='0'
             max='5000'
             defaultValue={value}
-            onChange={handleSliderChange}
+            onChange={handlePriceRange}
           />
         </Filter>
 

@@ -1,3 +1,20 @@
+import { faker } from '@faker-js/faker';
+
+faker.seed(99);
+
+export const products = [...Array(20)].map(() => ({
+  id: faker.datatype.uuid(),
+  name: faker.commerce.productName(),
+  price: faker.commerce.price(),
+  image: faker.image.nature(200, 200, true),
+  inStock: faker.helpers.arrayElement([0, 3, 5, 6, 7]),
+  fastDelivery: faker.datatype.boolean(),
+  ratings: faker.helpers.arrayElement([1, 2, 3, 4, 5]),
+  color: faker.color.human(),
+  cat: faker.helpers.arrayElement(['mens', 'womens', 'kids']),
+  size: faker.helpers.arrayElement([{ xs: 5, s: 6, m: 7, l: 8, xl: 9 }]),
+}));
+
 export const sliderItems = [
   {
     id: 1,
@@ -26,17 +43,17 @@ export const categories = [
   {
     id: 1,
     img: 'https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-    title: 'SHIRT STYLE!',
+    title: 'MENS',
   },
   {
     id: 2,
     img: 'https://images.pexels.com/photos/2983464/pexels-photo-2983464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-    title: 'LOUNGEWEAR LOVE',
+    title: 'WOMENS',
   },
   {
     id: 3,
     img: 'https://images.pexels.com/photos/5480696/pexels-photo-5480696.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500',
-    title: 'LIGHT JACKETS',
+    title: 'KIDS',
   },
 ];
 
