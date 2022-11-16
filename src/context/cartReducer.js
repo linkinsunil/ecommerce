@@ -10,6 +10,10 @@ export const cartReducer = (state, action) => {
             qty: 1,
           },
         ],
+        // ...state,
+        // cart: state.cart.some(el => el.id === action.payload.id)
+        //   ? (state.cart.filter(el => el.id === action.payload.id)[0].qty += 1)
+        //   : [...state.cart, { ...action.payload, qty: 1 }],
       };
     case 'REMOVE_FROM_CART':
       return {
@@ -34,6 +38,29 @@ export const cartReducer = (state, action) => {
       return {
         ...state,
         wishlist: state.wishlist.filter(item => item.id !== action.payload.id),
+      };
+    case 'SORT_BY_PRICE':
+      return { ...state, sortByPrice: action.payload };
+    case 'FILTER_BY_CATEGORY':
+      return {
+        ...state,
+        filterByCategory: state.filterByCategory.includes(action.payload)
+          ? state.filterByCategory.filter(cat => cat !== action.payload)
+          : state.filterByCategory.concat(action.payload),
+      };
+    case 'FILTER_BY_PRICE':
+      console.log(action.payload);
+      return { ...state, filterByPrice: action.payload };
+    case 'FILTER_BY_RATING':
+      return { ...state, filterByRating: action.payload };
+    case 'CLEAR_FILTERS':
+      return {
+        ...state,
+        sortByPrice: null,
+        filterByCategory: [],
+        filterBySize: null,
+        filterByPrice: null,
+        filterByRating: null,
       };
     default:
       return state;

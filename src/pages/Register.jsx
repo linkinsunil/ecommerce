@@ -1,3 +1,5 @@
+import { Search, Visibility, VisibilityOff } from '@mui/icons-material';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { mobile } from '../responsive';
@@ -33,13 +35,35 @@ const Title = styled.h1`
 const Form = styled.form`
   display: flex;
   flex-wrap: wrap;
+  gap: 10px;
 `;
 
 const Input = styled.input`
   flex: 1;
-  min-width: 40%;
-  margin: 20px 10px 0 0;
+  min-width: 35%;
+  margin: 10px 0 0 0;
   padding: 10px;
+  outline: none;
+`;
+
+const PasswordContainer = styled.div`
+  flex: 1;
+  margin: 10px 0 0 0;
+  border: 0.5px solid grey;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border-radius: 3px;
+  height: 30px;
+`;
+
+const PasswordInput = styled.input`
+  border: none;
+  outline: none;
+  flex: 1;
+  min-width: 35%;
+  padding: 10px;
+  ${mobile({ width: '50px' })}
 `;
 
 const Agreement = styled.span`
@@ -62,7 +86,15 @@ const Link = styled.span`
 `;
 
 const Register = () => {
+  const [pwdType, setPwdType] = useState({
+    pwd1: 'password',
+    pwd2: 'password',
+  });
   const navigate = useNavigate();
+
+  console.log(pwdType);
+  console.log(pwdType.pwd1);
+  console.log(pwdType.pwd2);
   return (
     <Container>
       <Wrapper>
@@ -72,8 +104,57 @@ const Register = () => {
           <Input placeholder='last name' />
           <Input placeholder='username' />
           <Input placeholder='email' />
-          <Input placeholder='password' />
-          <Input placeholder='confirm password' />
+          <PasswordContainer>
+            <PasswordInput type={pwdType.pwd1} placeholder='password' />
+            {pwdType.pwd1 === 'password' ? (
+              <VisibilityOff
+                style={{ color: 'grey', fontSize: '16px' }}
+                onClick={() =>
+                  setPwdType({
+                    ...pwdType,
+                    pwd1: pwdType.pwd1 === 'password' ? 'text' : 'password',
+                  })
+                }
+              />
+            ) : (
+              <Visibility
+                style={{ color: 'grey', fontSize: '16px' }}
+                onClick={() =>
+                  setPwdType({
+                    ...pwdType,
+                    pwd1: pwdType.pwd1 === 'password' ? 'text' : 'password',
+                  })
+                }
+              />
+            )}
+          </PasswordContainer>
+          <PasswordContainer>
+            <PasswordInput
+              type={pwdType.pwd2}
+              placeholder='consfirm password'
+            />
+            {pwdType.pwd2 === 'password' ? (
+              <VisibilityOff
+                style={{ color: 'grey', fontSize: '16px' }}
+                onClick={() =>
+                  setPwdType({
+                    ...pwdType,
+                    pwd2: pwdType.pwd2 === 'password' ? 'text' : 'password',
+                  })
+                }
+              />
+            ) : (
+              <Visibility
+                style={{ color: 'grey', fontSize: '16px' }}
+                onClick={() =>
+                  setPwdType({
+                    ...pwdType,
+                    pwd2: pwdType.pwd2 === 'password' ? 'text' : 'password',
+                  })
+                }
+              />
+            )}
+          </PasswordContainer>
           <Agreement>
             By creating an account, I consent to the processing of my personal
             data in accordance with the <b>PRIVACY POLICY</b> |{' '}

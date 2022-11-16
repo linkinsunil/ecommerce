@@ -91,7 +91,7 @@ const Cart = () => {
         </Top>
         {cart.length > 0 ? (
           <Bottom>
-            <CartItem cart={cart} dispatch={dispatch} />
+            <CartItem cart={cart} wishlist={wishlist} dispatch={dispatch} />
           </Bottom>
         ) : (
           <SummaryTitle

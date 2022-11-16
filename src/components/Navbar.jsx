@@ -80,12 +80,12 @@ const Navbar = () => {
     state: { cart, wishlist },
   } = useCart();
 
-  const handleRegister = () => {
-    navigate('/register');
-  };
-
   const handleLogin = () => {
     navigate('/login');
+  };
+
+  const handleLogout = () => {
+    navigate('/');
   };
 
   const handleCart = () => {
@@ -110,8 +110,8 @@ const Navbar = () => {
           <Logo onClick={() => navigate('/')}>CRAFT.</Logo>
         </Center>
         <Right>
-          <MenuItem onClick={handleRegister}>REGISTER</MenuItem>
           <MenuItem onClick={handleLogin}>SIGN IN</MenuItem>
+          <MenuItem onClick={handleLogout}>LOGOUT</MenuItem>
           <MenuItem onClick={handleWishlist}>
             <Badge badgeContent={wishlist.length} color='primary'>
               {wishlist.length > 0 ? (

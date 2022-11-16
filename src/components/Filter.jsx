@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { useCart } from '../context/cartContext';
 import { mobile } from '../responsive';
 import Rating from './Rating';
 
@@ -23,6 +24,7 @@ const FilterContainer = styled.div`
 const Filter = styled.div`
   margin: 20px;
   display: flex;
+  flex-direction: column;
 
   ${mobile({ margin: '0 20px', display: 'flex', flexDirection: 'column' })}
 `;
@@ -77,6 +79,21 @@ const RangeInput = styled.input.attrs({ type: 'range' })`
   }
 `;
 
+const InputBox = styled.div`
+  gap: 10px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
+const CheckBoxInput = styled.input.attrs({ type: 'checkbox' })``;
+
+const RadioInput = styled.input.attrs({ type: 'radio' })``;
+
+const InputLabel = styled.label`
+  font-size: 12px;
+`;
+
 const Button = styled.button`
   padding: 10px;
   background-color: transparent;
@@ -87,11 +104,14 @@ const Button = styled.button`
 `;
 
 const Filters = () => {
-  const [value, setValue] = useState(5000);
-  const [rate, setRate] = useState(3);
+  const {
+    state: { filterByPrice, filterByCategory, sortByPrice, filterByRating },
+  } = useCart();
 
-  const handlePriceRange = e => {
-    setValue(e.target.value);
+  const { dispatch } = useCart();
+
+  const handleRating = i => {
+    dispatch({ type: 'FILTER_BY_RATING', payload: i + 1 });
   };
 
   return (
@@ -99,14 +119,51 @@ const Filters = () => {
       <FilterContainer>
         <FilterText id='category'>Filter Products:</FilterText>
         <Filter>
-          <Select name='category-filter' htmlFor='category'>
-            <Option value='select-category'>Category</Option>
-            <Option value='men'>Men</Option>
-            <Option value='women'>Women</Option>
-            <Option value='Kids'>Kids</Option>
-          </Select>
-          <Select name='size-filter'>
-            <Option value='select-size'>Size</Option>
+          <InputBox>
+            <CheckBoxInput
+              name='category'
+              value='mens'
+              checked={filterByCategory.includes('mens')}
+              onChange={e =>
+                dispatch({
+                  type: 'FILTER_BY_CATEGORY',
+                  payload: e.target.value,
+                })
+              }
+            />
+            <InputLabel>Men</InputLabel>
+          </InputBox>
+          <InputBox>
+            <CheckBoxInput
+              name='category'
+              value='womens'
+              checked={filterByCategory.includes('womens')}
+              onChange={e =>
+                dispatch({
+                  type: 'FILTER_BY_CATEGORY',
+                  payload: e.target.value,
+                })
+              }
+            />
+            <InputLabel>Women</InputLabel>
+          </InputBox>
+          <InputBox>
+            <CheckBoxInput
+              name='category'
+              value='kids'
+              checked={filterByCategory.includes('kids')}
+              onChange={e =>
+                dispatch({
+                  type: 'FILTER_BY_CATEGORY',
+                  payload: e.target.value,
+                })
+              }
+            />
+            <InputLabel>Kids</InputLabel>
+          </InputBox>
+
+          <Select name='size-filter' style={{ display: 'none' }}>
+            <Option value=''>Size</Option>
             <Option value='xs'>XS</Option>
             <Option value='s'>S</Option>
             <Option value='m'>M</Option>
@@ -118,34 +175,53 @@ const Filters = () => {
         <FilterText id='price'>Filter Price:</FilterText>
         <Filter>
           <RangeInput
-            htmlFor='price'
-            name='price-range'
             type='range'
-            step='500'
-            min='0'
-            max='5000'
-            defaultValue={value}
-            onChange={handlePriceRange}
+            step='100'
+            min='100'
+            max='1000'
+            defaultValue={filterByPrice || 1000}
+            onChange={e =>
+              dispatch({ type: 'FILTER_BY_PRICE', payload: e.target.value })
+            }
           />
         </Filter>
 
-        <FilterText id='sort'>Sort Products:</FilterText>
+        <FilterText id='sort'>Sort by Price:</FilterText>
         <Filter>
-          <Select name='price-sort' htmlFor='sort'>
-            <Option>Newest</Option>
-            <Option value='asc'>Price (asc)</Option>
-            <Option value='desc'>Price (desc)</Option>
-          </Select>
+          <InputBox>
+            <RadioInput
+              type='radio'
+              name='price-sort'
+              checked={sortByPrice && sortByPrice === 'lth'}
+              onChange={e =>
+                dispatch({ type: 'SORT_BY_PRICE', payload: 'lth' })
+              }
+            />
+            <InputLabel id='lth'>Low to High</InputLabel>
+          </InputBox>
+          <InputBox>
+            <RadioInput
+              type='radio'
+              name='price-sort'
+              checked={sortByPrice && sortByPrice === 'htl'}
+              onChange={e =>
+                dispatch({ type: 'SORT_BY_PRICE', payload: 'htl' })
+              }
+            />
+            <InputLabel id='htl'>High to Low</InputLabel>
+          </InputBox>
         </Filter>
 
         <FilterText id='rating'>Rating:</FilterText>
         <Rating
-          rating={rate}
-          onClick={i => setRate(i + 1)}
+          rating={filterByRating}
+          onClick={i => handleRating(i)}
           style={{ cursor: 'pointer' }}
         />
 
-        <Button>CLEAR FILTERS</Button>
+        <Button onClick={() => dispatch({ type: 'CLEAR_FILTERS' })}>
+          CLEAR FILTERS
+        </Button>
       </FilterContainer>
     </Container>
   );

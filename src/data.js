@@ -12,7 +12,7 @@ export const products = [...Array(20)].map(() => ({
   ratings: faker.helpers.arrayElement([1, 2, 3, 4, 5]),
   color: faker.color.human(),
   cat: faker.helpers.arrayElement(['mens', 'womens', 'kids']),
-  size: faker.helpers.arrayElement([{ xs: 5, s: 6, m: 7, l: 8, xl: 9 }]),
+  size: faker.helpers.arrayElement([[{ xs: 3, s: 4, m: 5, l: 6, xl: 2 }]]),
 }));
 
 export const sliderItems = [
@@ -43,17 +43,17 @@ export const categories = [
   {
     id: 1,
     img: 'https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-    title: 'MENS',
+    title: 'mens',
   },
   {
     id: 2,
     img: 'https://images.pexels.com/photos/2983464/pexels-photo-2983464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-    title: 'WOMENS',
+    title: 'womens',
   },
   {
     id: 3,
     img: 'https://images.pexels.com/photos/5480696/pexels-photo-5480696.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500',
-    title: 'KIDS',
+    title: 'kids',
   },
 ];
 

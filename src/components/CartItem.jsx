@@ -45,6 +45,7 @@ const ProductId = styled.div`span`;
 const ProductColor = styled.div`
   width: 20px;
   height: 20px;
+  border: 0.5px solid lightgray;
   border-radius: 50%;
   background-color: ${props => props.color};
 `;
@@ -64,7 +65,7 @@ const PriceDetail = styled.div`
 const ProductAmountContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 const ProductPrice = styled.span`
@@ -119,7 +120,7 @@ const RemoveButton = styled(Button)`
   border: none;
   background-color: transparent;
   color: black;
-  margin-top: 20px;
+  margin-top: 5px;
   width: 70%;
 
   &:hover {
@@ -128,12 +129,24 @@ const RemoveButton = styled(Button)`
   }
 `;
 
-const CartItem = ({ cart, dispatch }) => {
+const AddButton = styled(Button)`
+  border: none;
+  background-color: transparent;
+  color: black;
+  margin-top: 5px;
+  width: 70%;
+
+  &:hover {
+    background-color: #e2e2e2;
+    transition: all 0.5s ease;
+  }
+`;
+
+const CartItem = ({ cart, wishlist, dispatch }) => {
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
     const subTotal = cart.map(item => Number(item.price) * Number(item.qty));
-    console.log(subTotal);
     setTotal(subTotal.reduce((acc, curr) => acc + curr, 0));
   }, [cart]);
 
@@ -184,6 +197,24 @@ const CartItem = ({ cart, dispatch }) => {
               >
                 REMOVE FROM CART
               </RemoveButton>
+
+              {wishlist.some(el => el.id === item.id) ? (
+                <RemoveButton
+                  onClick={() =>
+                    dispatch({ type: 'REMOVE_FROM_WISHLIST', payload: item })
+                  }
+                >
+                  REMOVE FROM WISHLIST
+                </RemoveButton>
+              ) : (
+                <AddButton
+                  onClick={() =>
+                    dispatch({ type: 'ADD_TO_WISHLIST', payload: item })
+                  }
+                >
+                  ADD TO WISHLIST
+                </AddButton>
+              )}
             </PriceDetail>
           </Product>
         ))}

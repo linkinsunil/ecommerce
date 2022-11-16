@@ -139,13 +139,58 @@ const WishIcon = styled.div`
 const ProductCard = ({ page }) => {
   const navigate = useNavigate();
   const {
-    state: { products, cart, wishlist },
+    state: {
+      products,
+      cart,
+      wishlist,
+      filterByCategory,
+      filterByPrice,
+      sortByPrice,
+      filterByRating,
+    },
     dispatch,
   } = useCart();
 
+  const getSortedData = (arr, sortBy) => {
+    if (sortBy && sortBy === 'lth') {
+      return arr.sort((a, b) => a.price - b.price);
+    }
+    if (sortBy && sortBy === 'htl') {
+      return arr.sort((a, b) => b.price - a.price);
+    }
+    return arr;
+  };
+
+  const categorisedProducts = (arr, category, price, rating) => {
+    console.log('category', category);
+    console.log('filterByRating', filterByRating);
+    return category.length > 0
+      ? category
+          .map(itemCategory => arr.filter(prod => prod.cat === itemCategory))
+          .flat()
+          .filter(item => (price ? Number(item.price) <= price : item))
+          .filter(item => (rating ? Number(item.ratings) <= rating : item))
+      : arr
+          .filter(item => (price ? Number(item.price) <= price : item))
+          .filter(item => (rating ? Number(item.ratings) <= rating : item));
+  };
+
+  const sortedData = getSortedData(products, sortByPrice);
+
+  const filteredData = categorisedProducts(
+    sortedData,
+    filterByCategory,
+    filterByPrice,
+    filterByRating
+  );
+
+  console.log('filteredData', filteredData);
+  console.log('filterByPrice', filterByPrice);
+  console.log('sortByPrice', sortByPrice);
+
   return (
     <Container>
-      {products.map(item => (
+      {filteredData.map(item => (
         <Wrapper key={item.id}>
           <Circle />
           <Image src={item.image} />
@@ -205,14 +250,8 @@ const ProductCard = ({ page }) => {
                 ₹ {item.price} <Rating rating={item.ratings} />
               </Price>
               {cart.some(el => el.id === item.id) ? (
-                <Button
-                  type='primary'
-                  style={{ backgroundColor: 'red' }}
-                  onClick={() =>
-                    dispatch({ type: 'REMOVE_FROM_CART', payload: item })
-                  }
-                >
-                  REMOVE FROM CART
+                <Button type='primary' onClick={() => navigate('/cart')}>
+                  GO TO CART
                 </Button>
               ) : (
                 <Button

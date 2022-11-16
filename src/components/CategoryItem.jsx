@@ -48,15 +48,10 @@ const Button = styled.button`
 const CategoryItem = ({ item }) => {
   const navigate = useNavigate();
 
-  const {
-    state: { products },
-  } = useCart();
+  const { dispatch } = useCart();
 
-  const [prod, setProd] = useState([]);
-
-  const handleCategory = item => {
-    const newProd = products.filter(el => el.cat === item.title.toLowerCase());
-    setProd(newProd);
+  const handleClick = item => {
+    dispatch({ type: 'FILTER_BY_CATEGORY', payload: item.title });
     navigate('/productList');
   };
 
@@ -64,8 +59,8 @@ const CategoryItem = ({ item }) => {
     <Container>
       <Image src={item.img} />
       <Info>
-        <Title>{item.title}</Title>
-        <Button onClick={() => handleCategory(item)}>SHOP NOW</Button>
+        <Title>{item.title.toUpperCase()}</Title>
+        <Button onClick={() => handleClick(item)}>SHOP NOW</Button>
       </Info>
     </Container>
   );
